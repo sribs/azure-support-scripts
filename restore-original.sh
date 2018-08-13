@@ -41,7 +41,7 @@ Usage Example: ./restore-original.sh -s xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx --r
 "
 
 POSITIONAL=()
-echo $#
+#echo $# for debugging purpose only
 if [[ $# -ne 12 ]]
 then
     echo -e $help
