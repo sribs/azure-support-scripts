@@ -3,7 +3,7 @@
 # Module : restore-original.sh
 # Author : Sriharsha B S, sribs@microsoft.com
 # Date : 13th August 2018
-# Description : BASH form of Restore-AzureRmOriginalVM powershell command
+# Description : BASH form of Restore-AzureRmOriginalVM powershell command.
 
 help="\n
 ========================================================================================\n
