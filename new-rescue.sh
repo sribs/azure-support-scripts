@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Module : new-rescue.sh
-# Author : Sriharsha B S (sribs@microsoft.com, Azure Linux Escalation Team),  Dinesh Kumar Bhaskar (dibhaskar@microsoft.com, Azure Linux Escalation Team)
+# Author : Sriharsha B S (sribs@microsoft.com, Azure Linux Escalation Team),  Dinesh Kumar Baskar (dibaskar@microsoft.com, Azure Linux Escalation Team)
 # Date : 13th August 2018
 # Description : BASH form of New-AzureRMRescueVM powershell command.
 
