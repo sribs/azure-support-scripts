@@ -22,22 +22,22 @@ Description\n
 You may run this script if you may require a temporary (Rescue VM) for troubleshooting of the OS Disk.\n
 This Script Performs the following operation :\n
 1. Stop and Deallocate the Problematic Original VM\n
-2. Make a OS Disk Copy of the Original Problematic VM depending on the type of Disks
-3. Create a Rescue VM (based on the Original VM's Distribution and SKU) and attach the OS Disk copy to the Rescue VM
-4. Start the Rescue VM for troubleshooting.
+2. Make a OS Disk Copy of the Original Problematic VM depending on the type of Disks\n
+3. Create a Rescue VM (based on the Original VM's Distribution and SKU) and attach the OS Disk copy to the Rescue VM\n
+4. Start the Rescue VM for troubleshooting.\n\n\n
 
 =========================================================================================\n
 Arguments and Usage\n
 =========================================================================================\n\n
 All the arguments are mandatory. However, arguments may be passed in any order\n
 1. --rescue-vm-name : Name of the Rescue VM Name\n
-2. -u or --username : Rescue VM's Username
+2. -u or --username : Rescue VM's Username\n
 3. -g or --resource-group : Problematic Original VM's Resource Group\n
 4. -n or --name : Problematic Original VM\n
-5. -p or --password : Rescue VM's Password
+5. -p or --password : Rescue VM's Password\n
 6. -s or --subscription : Subscription Id where the respective resources are present.\n\n
 
-Usage Example: ./new-rescue.sh --recue-vm-name debianRescue -g debian -n debian9 -s  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -u sribs -p Welcome@1234
+Usage Example: ./new-rescue.sh --recue-vm-name debianRescue -g debian -n debian9 -s  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -u sribs -p Welcome@1234\n\n\n
 "
 
 POSITIONAL=()
