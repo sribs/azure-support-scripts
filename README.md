@@ -50,7 +50,7 @@ The following Requirements are Mandatory inorder to run the scripts successfully
 1. Python - (Any verison as long as Azure CLI is supported)
 2. BASH command processor or BASH Terminal.
 3. An Active Azure Subscription.
-4. JQuery commandline Processing | jq command for BASH terminal
+4. JSON commandline Processing | jq command for BASH terminal
 
     In RHEL/Centos Operating System
       ``` bash
