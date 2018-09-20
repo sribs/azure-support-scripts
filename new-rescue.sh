@@ -141,7 +141,8 @@ then
     #az storage blob copy start --destination-blob $target_disk_name --destination-container vhds --account-name $storage_account --source-uri $disk_uri
     az storage blob copy start --destination-blob $target_disk_name.vhd --destination-container vhds --account-name $storage_account --source-uri $disk_uri
 
-    az vm create --use-unmanaged-disk --name $rn -g $g --attach-data-disks "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd" --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
+    az vm create --use-unmanaged-disk --name $rn -g $g --location $location --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS
+    az vm unmanaged-disk attach --vm-name $rn -g $g --name "$src_disk-Rescue"  --vhd-uri "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd" 
 
 else
     disk_uri=$(echo $os_disk | jq ".managedDisk.id")
