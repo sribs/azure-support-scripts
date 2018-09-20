@@ -114,6 +114,7 @@ fi
 az account set --subscription $subscription
 
 vm_details=$(az vm show -g $g -n $vm)
+location=$(echo $vm_details | jq '.location' | tr -d '"')
 
 echo "Stopping and deallocating the Problematic Original VM"
 az vm deallocate -g $g -n $vm
@@ -158,7 +159,7 @@ else
     snapshotId=$(az snapshot show --name $snapshot_name --resource-group $resource_group --query [id] -o tsv)
     az disk create --resource-group $resource_group --name $target_disk_name --sku Standard_LRS --source $snapshotId
 
-    az vm create --name $rn -g $g --attach-data-disks $target_disk_name --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
+    az vm create --name $rn -g $g --location $location --attach-data-disks $target_disk_name --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
 fi
  
 
