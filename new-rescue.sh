@@ -135,7 +135,7 @@ if [[ -z $managed ]]
 then
     disk_uri=$(echo $os_disk | jq ".vhd.uri")
     disk_uri=$(echo "${disk_uri//\"}")
-    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T | | sed 's/:/-/g'`"
+    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T |sed 's/:/-/g'`"
     #target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T`"
     storage_account=`echo $disk_uri | awk -F "https://" '{print $2}' | awk -F ".blob" '{print $1}'`
     #key=`az storage account keys list -g $resource_group -n $storage_account --output table |  awk '{if($1=="key1")print $3}' | tr -d '[:blank:]'`
@@ -143,7 +143,7 @@ then
     az storage blob copy start --destination-blob $target_disk_name.vhd --destination-container vhds --account-name $storage_account --source-uri $disk_uri
 
     az vm create --use-unmanaged-disk --name $rn -g $g --location $location --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS
-    az vm unmanaged-disk attach --vm-name $rn -g $g --name "$src_disk-Rescue"  --vhd-uri "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd" 
+    az vm unmanaged-disk attach --vm-name $rn -g $g --name $target_disk_name  --vhd-uri "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd"
 
 else
     disk_uri=$(echo $os_disk | jq ".managedDisk.id")
