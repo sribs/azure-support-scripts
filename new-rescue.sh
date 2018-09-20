@@ -134,10 +134,12 @@ if [[ $managed = "null" ]]
 then
     disk_uri=$(echo $os_disk | jq ".vhd.uri")
     disk_uri=$(echo "${disk_uri//\"}")
-    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T`"
+    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T | | sed 's/:/-/g'`"
+    #target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T`"
     storage_account=`echo $disk_uri | awk -F "https://" '{print $2}' | awk -F ".blob" '{print $1}'`
     #key=`az storage account keys list -g $resource_group -n $storage_account --output table |  awk '{if($1=="key1")print $3}' | tr -d '[:blank:]'`
-    az storage blob copy start --destination-blob $target_disk_name --destination-container vhds --account-name $storage_account --source-uri $disk_uri
+    #az storage blob copy start --destination-blob $target_disk_name --destination-container vhds --account-name $storage_account --source-uri $disk_uri
+    az storage blob copy start --destination-blob $target_disk_name.vhd --destination-container vhds --account-name $storage_account --source-uri $disk_uri
 
     az vm create --use-unmanaged-disk --name $rn -g $g --attach-data-disks "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd" --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
 
