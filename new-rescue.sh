@@ -131,7 +131,7 @@ echo $urn
 #echo $managed
 disk_uri="null"
 resource_group=$g
-if [[ $managed = "null" ]]
+if [[ -z $managed ]]
 then
     disk_uri=$(echo $os_disk | jq ".vhd.uri")
     disk_uri=$(echo "${disk_uri//\"}")
