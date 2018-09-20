@@ -90,5 +90,5 @@ cd azure-support-scripts
 ```
 
 ``` bash
-./new-rescue.sh --recue-vm-name <Rescue VM Name> -g <Original VM Resource Group> -n <Original VM Name> -s <Subscription Id> -u <Admin Username for Rescue VM> -p <Admin Password for Rescue VM>
+./new-rescue.sh --rescue-vm-name <Rescue VM Name> -g <Original VM Resource Group> -n <Original VM Name> -s <Subscription Id> -u <Admin Username for Rescue VM> -p <Admin Password for Rescue VM>
 ```
