@@ -120,7 +120,7 @@ echo "Stopping and deallocating the Problematic Original VM"
 az vm deallocate -g $g -n $vm
  
 os_disk=$(echo $vm_details| jq ".storageProfile.osDisk")
-managed=$(echo $os_disk | jq ".[0].managedDisk")
+managed=$(echo $os_disk | jq ".managedDisk")
 offer=$(echo $vm_details | jq ".storageProfile.imageReference.offer")
 publisher=$(echo $vm_details | jq ".storageProfile.imageReference.publisher")
 sku=$(echo $vm_details | jq ".storageProfile.imageReference.sku")
