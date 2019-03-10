@@ -83,8 +83,10 @@ case $key in
     shift
     ;;
     *)    # unknown option
+    echo -e $help
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
+    exit;
     ;;
 esac
 done
