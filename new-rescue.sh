@@ -116,12 +116,13 @@ fi
 az account set --subscription $subscription
 
 vm_details=$(az vm show -g $g -n $vm)
+location=$(echo $vm_details | jq '.location' | tr -d '"')
 
 echo "Stopping and deallocating the Problematic Original VM"
 az vm deallocate -g $g -n $vm
  
 os_disk=$(echo $vm_details| jq ".storageProfile.osDisk")
-managed=$(echo $os_disk | jq ".[0].managedDisk")
+managed=$(echo $os_disk | jq ".managedDisk")
 offer=$(echo $vm_details | jq ".storageProfile.imageReference.offer")
 publisher=$(echo $vm_details | jq ".storageProfile.imageReference.publisher")
 sku=$(echo $vm_details | jq ".storageProfile.imageReference.sku")
@@ -132,16 +133,19 @@ echo $urn
 #echo $managed
 disk_uri="null"
 resource_group=$g
-if [[ $managed = "null" ]]
+if [[ -z $managed ]]
 then
     disk_uri=$(echo $os_disk | jq ".vhd.uri")
     disk_uri=$(echo "${disk_uri//\"}")
-    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T`"
+    target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T |sed 's/:/-/g'`"
+    #target_disk_name="`echo $disk_uri | awk -F "/" '{print $NF}' | awk -F".vhd" '{print $1}'`-`date +%d-%m-%Y-%T`"
     storage_account=`echo $disk_uri | awk -F "https://" '{print $2}' | awk -F ".blob" '{print $1}'`
     #key=`az storage account keys list -g $resource_group -n $storage_account --output table |  awk '{if($1=="key1")print $3}' | tr -d '[:blank:]'`
-    az storage blob copy start --destination-blob $target_disk_name --destination-container vhds --account-name $storage_account --source-uri $disk_uri
+    #az storage blob copy start --destination-blob $target_disk_name --destination-container vhds --account-name $storage_account --source-uri $disk_uri
+    az storage blob copy start --destination-blob $target_disk_name.vhd --destination-container vhds --account-name $storage_account --source-uri $disk_uri
 
-    az vm create --use-unmanaged-disk --name $rn -g $g --attach-data-disks "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd" --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
+    az vm create --use-unmanaged-disk --name $rn -g $g --location $location --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS
+    az vm unmanaged-disk attach --vm-name $rn -g $g --name $target_disk_name  --vhd-uri "https://$storage_account.blob.core.windows.net/vhds/$target_disk_name.vhd"
 
 else
     disk_uri=$(echo $os_disk | jq ".managedDisk.id")
@@ -157,7 +161,7 @@ else
     snapshotId=$(az snapshot show --name $snapshot_name --resource-group $resource_group --query [id] -o tsv)
     az disk create --resource-group $resource_group --name $target_disk_name --sku Standard_LRS --source $snapshotId
 
-    az vm create --name $rn -g $g --attach-data-disks $target_disk_name --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
+    az vm create --name $rn -g $g --location $location --attach-data-disks $target_disk_name --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS 
 fi
  
 
