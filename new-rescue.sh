@@ -162,7 +162,7 @@ else
     az disk create --resource-group $resource_group --name $target_disk_name -l $location --sku Standard_LRS --source $snapshotId
 
     az vm create --name $rn -g $g --location $location --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS
-    az vm disk attach -g $g --vm-name $rn --disk $target_disk_name
+    az vm disk attach -g $g --vm-name $rn --disk  $target_disk_name
 fi
  
 
