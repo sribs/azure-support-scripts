@@ -6,4 +6,4 @@ cat /etc/fstab.org | awk '/\/boot /{print}' >> /etc/fstab
 cat /etc/fstab
 
 . common/exit-chroot.sh
-. common/umount-rescue.sh 
+. common/umount-rescue.sh
