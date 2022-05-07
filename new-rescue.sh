@@ -129,6 +129,14 @@ sku=$(echo $vm_details | jq ".storageProfile.imageReference.sku")
 version=$(echo $vm_details | jq ".storageProfile.imageReference.version")
 
 urn=$(echo "${publisher//\"}:${offer//\"}:${sku//\"}:${version//\"}")
+# fix null values
+if [ `echo "$urn" | grep -q null; echo $?` -eq 0 ] ; then
+    publisher="canonical"
+    offer="0001-com-ubuntu-server-focal"
+    sku="20_04-lts-gen2"
+    version="latest"
+    urn=$(echo "${publisher//\"}:${offer//\"}:${sku//\"}:${version//\"}")
+fi
 echo $urn
 #echo $managed
 disk_uri="null"
