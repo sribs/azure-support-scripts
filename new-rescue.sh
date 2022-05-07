@@ -153,7 +153,7 @@ else
     echo "##### Generatnig Snapshot #######"
     source_disk_name=`echo $disk_uri | awk -F"/" '{print $NF}'`
     snapshot_name="`echo $disk_uri | awk -F"/" '{print $NF}' | sed 's/_/-/g'`-`date +%d-%m-%Y-%T | sed 's/:/-/g'`"
-    target_disk_name="`echo $disk_uri | awk -F"/" '{print $NF}'`-copy-`date +%d-%m-%Y-%T | sed 's/:/-/g'`"
+    target_disk_name="`echo $disk_uri | awk -F"/" '{print $NF}'`.`date +%s`"
     az snapshot create -g $resource_group -n $snapshot_name --source $source_disk_name -l $location
 
     echo "##### Creating Disk from Snapshot #######"
@@ -162,7 +162,7 @@ else
     az disk create --resource-group $resource_group --name $target_disk_name -l $location --sku Standard_LRS --source $snapshotId
 
     az vm create --name $rn -g $g --location $location --admin-username $user --admin-password $password --image $urn --storage-sku Standard_LRS
-    az vm disk attach -g $g --vm-name $rn --disk  $target_disk_name
+    az vm disk attach -g $g --vm-name $rn --name  $target_disk_name
 fi
  
 
